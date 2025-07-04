@@ -7,9 +7,9 @@ LABEL		org.opencontainers.image.licenses=MIT
 
 USER		root
 
-RUN			apt-get update -y && apt-get upgrade -y && apt-get install -y ca-certificates iproute2 tzdata \
-			    && adduser -D -h /home/container container && touch /home/container/nginx.conf && ln -s /etc/nginx/sites-enabled/nginx.conf /home/container/nginx.conf \
-                && rm /etc/nginx/sites-enabled/default
+RUN			apt-get update -y && apt-get upgrade -y && apt-get install -y ca-certificates iproute2 tzdata 
+RUN         useradd -ms /bin/bash container
+
 ENV			LANG=en_US.UTF-8
 ENV			LANGUAGE=en_US:en
 ENV			LC_ALL=en_US.UTF-8
