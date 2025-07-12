@@ -8,7 +8,9 @@ LABEL		org.opencontainers.image.licenses=MIT
 USER		root
 
 RUN			apk add --update --no-cache ca-certificates iproute2 tzdata \
-				&& adduser -D -h /home/container container && setcap 'cap_net_bind_service=+ep' /usr/bin/caddy
+				&& adduser -D -h /home/container container \
+				&& setcap 'cap_net_bind_service=+ep' /usr/bin/caddy \
+				&& chmod +x /usr/bin/caddy
 
 USER		container
 ENV			USER=container HOME=/home/container
