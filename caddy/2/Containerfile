@@ -1,0 +1,18 @@
+FROM caddy:2.10-alpine
+
+LABEL		author="Nosharp" maintainer="contact@nosharp.cc"
+
+LABEL		org.opencontainers.image.source="https://github.com/NoSharp/images"
+LABEL		org.opencontainers.image.licenses=MIT
+
+USER		root
+
+RUN			apk add --update --no-cache ca-certificates iproute2 tzdata \
+				&& adduser -D -h /home/container container
+
+USER		container
+ENV			USER=container HOME=/home/container
+WORKDIR		/home/container
+
+COPY		./entrypoint.sh /entrypoint.sh
+CMD			[ "/bin/ash", "/entrypoint.sh" ]

@@ -36,9 +36,9 @@ export IMAGE_PROMPT
 # Switch to the container's working directory
 cd /home/container || exit 1
 
-# Print Node.js version
-printf "nginx -v\n" "$IMAGE_PROMPT"
-nginx -v
+# Print Caddy version
+printf "caddy -v\n" "$IMAGE_PROMPT"
+caddy -v
 
 # Replace variables in the startup command
 PARSED=$(echo "${STARTUP}" | sed -e 's/{{/${/g' -e 's/}}/}/g' | eval echo "$(cat -)")

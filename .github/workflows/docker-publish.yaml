@@ -20,7 +20,7 @@ jobs:
       matrix:
         image:
           - {type: "bun", image: "1.2", PREFIX: "bun", SUFFIX: "", context: "./bun", platforms: "linux/amd64,linux/arm64"}
-          - {type: "nginx", image: "1.29", PREFIX: "nginx", SUFFIX: "", context: "./nginx", platforms: "linux/amd64,linux/arm64"}
+          - {type: "caddy", image: "2", PREFIX: "caddy", SUFFIX: "", context: "./caddy", platforms: "linux/amd64,linux/arm64"}
 
     steps:
       - name: Code checkout
