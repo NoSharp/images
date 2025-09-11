@@ -36,10 +36,6 @@ export IMAGE_PROMPT
 # Switch to the container's working directory
 cd /home/container || exit 1
 
-# Print Node.js version
-printf "%bun -v\n" "$IMAGE_PROMPT"
-bun -v
-
 # Replace variables in the startup command
 PARSED=$(echo "${STARTUP}" | sed -e 's/{{/${/g' -e 's/}}/}/g' | eval echo "$(cat -)")
 printf "%s%s\n" "$IMAGE_PROMPT" "$PARSED"
