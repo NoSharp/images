@@ -1,0 +1,29 @@
+FROM --platform=$TARGETOS/$TARGETARCH prom/prometheus:v3.11.1 AS upstream
+
+FROM --platform=$TARGETOS/$TARGETARCH docker.io/library/debian:stable-slim
+
+LABEL author="Nosharp" maintainer="contact@nosharp.cc"
+
+LABEL org.opencontainers.image.source="https://github.com/NoSharp/images"
+LABEL org.opencontainers.image.licenses=MIT
+
+USER root
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -y && apt-get upgrade -y && apt-get install -y ca-certificates iproute2 tzdata \
+    && useradd --create-home --home-dir /home/container --shell /bin/bash container \
+    && mkdir -p /home/container/data \
+    && chown -R container:container /home/container
+
+COPY --from=upstream /bin/prometheus /usr/local/bin/prometheus
+COPY --from=upstream /bin/promtool /usr/local/bin/promtool
+
+EXPOSE 9090
+
+USER container
+ENV USER=container HOME=/home/container
+WORKDIR /home/container
+
+COPY --chmod=755 ./entrypoint.sh /entrypoint.sh
+CMD ["/bin/bash", "/entrypoint.sh"]

@@ -50,6 +50,60 @@ pre-installing common installation dependencies such as `curl` and `wget`.
     - `linux/amd64`
     - `linux/arm64`
 
+### Grafana
+
+- [`grafana12.4`](https://github.com/NoSharp/images/tree/master/grafana/12.4)
+  - Grafana 12.4 image configured for Pterodactyl with writable data paths under `/home/container`
+  - Tags
+    - `ghcr.io/nosharp/images:grafana12.4`
+  - Supported Architectures
+    - `linux/amd64`
+    - `linux/arm64`
+
+### Prometheus
+
+- [`prometheus3.11`](https://github.com/NoSharp/images/tree/master/prometheus/3.11)
+  - Prometheus 3.11 image configured for Pterodactyl with writable TSDB storage under `/home/container/data`
+  - Tags
+    - `ghcr.io/nosharp/images:prometheus3.11`
+  - Supported Architectures
+    - `linux/amd64`
+    - `linux/arm64`
+  - Example startup
+    - `./prometheus --config.file=/home/container/prometheus.yml --storage.tsdb.path=/home/container/data --web.listen-address=0.0.0.0:9090`
+  - Example scrape config for Pushgateway
+
+```yaml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: pushgateway
+    honor_labels: true
+    static_configs:
+      - targets:
+          - pushgateway:9091
+```
+
+### Pushgateway
+
+- [`pushgateway1.11`](https://github.com/NoSharp/images/tree/master/pushgateway/1.11)
+  - Pushgateway 1.11 image for HTTP-ingested service metrics that Prometheus can scrape
+  - Tags
+    - `ghcr.io/nosharp/images:pushgateway1.11`
+  - Supported Architectures
+    - `linux/amd64`
+    - `linux/arm64`
+  - Example startup
+    - `./pushgateway --web.listen-address=0.0.0.0:9091 --persistence.file=/home/container/data/pushgateway.db`
+  - Notes
+    - Prefer service-level aggregate metrics like DarkRP money totals, credits, and item source counters.
+    - Avoid per-player labels unless you intentionally want high-cardinality metric series.
+  - Example push
+    - `echo "darkrp_money_total 125000" | curl --data-binary @- http://pushgateway:9091/metrics/job/darkrp/instance/main`
+  - GMod Lua example
+    - `examples/gmod-pushgateway.lua`
+
 ### Golang
 
 - [`go1.19`](https://github.com/matthewpi/images/tree/master/go/1.19)

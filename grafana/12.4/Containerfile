@@ -1,0 +1,30 @@
+FROM --platform=$TARGETOS/$TARGETARCH grafana/grafana:12.4-ubuntu
+
+LABEL author="Nosharp" maintainer="contact@nosharp.cc"
+
+LABEL org.opencontainers.image.source="https://github.com/NoSharp/images"
+LABEL org.opencontainers.image.licenses=MIT
+
+USER root
+
+ENTRYPOINT []
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV GF_PATHS_HOME=/usr/share/grafana
+ENV GF_PATHS_CONFIG=/etc/grafana/grafana.ini
+ENV GF_PATHS_DATA=/home/container/data
+ENV GF_PATHS_LOGS=/home/container/logs
+ENV GF_PATHS_PLUGINS=/home/container/plugins
+ENV GF_PATHS_PROVISIONING=/home/container/provisioning
+
+RUN apt-get update -y && apt-get upgrade -y && apt-get install -y ca-certificates iproute2 tzdata \
+    && useradd --create-home --home-dir /home/container --shell /bin/bash container \
+    && mkdir -p /home/container/data /home/container/logs /home/container/plugins /home/container/provisioning \
+    && chown -R container:container /home/container
+
+USER container
+ENV USER=container HOME=/home/container
+WORKDIR /home/container
+
+COPY --chmod=755 ./entrypoint.sh /entrypoint.sh
+CMD ["/bin/bash", "/entrypoint.sh"]

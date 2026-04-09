@@ -22,6 +22,9 @@ jobs:
           - {type: "bun", image: "1.2", PREFIX: "bun", SUFFIX: "", context: "./bun", platforms: "linux/amd64,linux/arm64"}
           - {type: "bun", image: "1.2withMariaClient", PREFIX: "bun", SUFFIX: "", context: "./bun", platforms: "linux/amd64,linux/arm64"}
           - {type: "caddy", image: "2.1", PREFIX: "caddy", SUFFIX: "", context: "./caddy", platforms: "linux/amd64,linux/arm64"}
+          - {type: "grafana", image: "12.4", PREFIX: "grafana", SUFFIX: "", context: "./grafana", platforms: "linux/amd64,linux/arm64"}
+          - {type: "prometheus", image: "3.11", PREFIX: "prometheus", SUFFIX: "", context: "./prometheus", platforms: "linux/amd64,linux/arm64"}
+          - {type: "pushgateway", image: "1.11", PREFIX: "pushgateway", SUFFIX: "", context: "./pushgateway", platforms: "linux/amd64,linux/arm64"}
 
     steps:
       - name: Code checkout
